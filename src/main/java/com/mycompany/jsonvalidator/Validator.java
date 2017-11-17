@@ -19,7 +19,7 @@ public class Validator {
         try {
             parser.parse(jsonString);
         } catch (ParseException ex) {
-            return jsonErr(ex.getErrorType(), ex.getMessage(), ex.getPosition());
+            return jsonErr(ex.getErrorType(), ex.toString(), ex.getPosition());
         }
         return jsonString;
     }
