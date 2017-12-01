@@ -1,9 +1,10 @@
 FROM openjdk:alpine
 
 EXPOSE 80
-RUN apk add --no-cache gradle
+
+RUN apk add --no-cache maven
 ADD src /jsonValidator/src
-ADD build.gradle /jsonValidator/build.gradle
+ADD pom.xml /jsonValidator/pom.xml
 WORKDIR /jsonValidator
-RUN gradle fatJar
-CMD java -jar jsonValidator.jar
+RUN mvn clean install -e
+CMD mvn exec:java -e
