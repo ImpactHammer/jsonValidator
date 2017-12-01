@@ -7,5 +7,4 @@ ADD build.gradle /gradle/build.gradle
 WORKDIR /gradle/
 RUN gradle fatJar
 WORKDIR /gradle/build/libs/
-CMD java -jar jsonValidator.jar
-CMD sh
+CMD java -jar gradle.jar
