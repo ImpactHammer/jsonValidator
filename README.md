@@ -7,7 +7,7 @@ sudo docker build -t validation-service github.com/impacthammer/jsonvalidator &&
 ```
   with gradle:
   ```bash
-sudo docker build -t validation-service github.com/ImpactHammer/jsonValidator/tree/gradle && sudo docker run --rm -p 80:80 validation-service
+sudo docker build -t validation-service github.com/ImpactHammer/jsonValidator#gradle && sudo docker run --rm -p 80:80 validation-service
 ```
 
 Send file for validation:
