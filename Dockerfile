@@ -1,10 +1,10 @@
 FROM gradle:jdk-alpine
-
+ 
 EXPOSE 80
-
-RUN apk add --no-cache maven
-ADD src /jsonValidator/src
-ADD pom.xml /jsonValidator/pom.xml
-WORKDIR /jsonValidator
-RUN mvn clean install -e
-CMD mvn exec:java -e
+USER root
+ADD src /gradle/src
+ADD build.gradle /gradle/build.gradle
+WORKDIR /gradle/
+RUN gradle fatJar
+WORKDIR /gradle/build/libs/
+CMD java -jar gradle.jar
