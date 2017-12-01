@@ -1,4 +1,4 @@
-FROM openjdk:alpine
+FROM gradle:jdk-alpine
 
 EXPOSE 80
 
