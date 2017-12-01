@@ -1,6 +1,7 @@
 FROM gradle:jdk-alpine
 
 EXPOSE 80
+USER root
 ADD src /gradle/src
 ADD build.gradle /gradle/build.gradle
 WORKDIR /gradle/
