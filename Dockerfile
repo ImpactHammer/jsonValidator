@@ -8,3 +8,4 @@ WORKDIR /gradle/
 RUN gradle fatJar
 WORKDIR /gradle/build/libs/
 CMD java -jar jsonValidator.jar
+CMD sh
