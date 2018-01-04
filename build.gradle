@@ -3,6 +3,7 @@ apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'com.bmuschko.docker-remote-api'
 
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 
 mainClassName = 'com.mycompany.jsonvalidator.Main'
@@ -27,9 +28,18 @@ task fatJar(type: Jar) {
     with jar
 }
 
+task createDockerfile(type: Dockerfile) {
+    destFile = project.file('./Dockerfile')
+    from 'openjdk:alpine'
+    exposePort 80
+    addFile ('.', '/')
+    defaultCommand ('java', '-jar', '/build/libs/validation-service.jar')
+}
+
 task createDockerImage(type: DockerBuildImage) {
     dependsOn fatJar
-    inputDir = file('.')
+    dependsOn createDockerfile
+    inputDir = createDockerfile.destFile.parentFile
     tag = 'validation-service'
 }
 
