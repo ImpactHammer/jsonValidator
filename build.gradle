@@ -1,0 +1,53 @@
+
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'com.bmuschko.docker-remote-api'
+
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+
+mainClassName = 'com.mycompany.jsonvalidator.Main'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.bmuschko:gradle-docker-plugin:3.2.1'
+    }
+}
+
+task fatJar(type: Jar) {
+	manifest {
+        attributes (
+        	'Main-Class': 'com.mycompany.jsonvalidator.Main'
+        )
+    }
+    baseName 'validation-service'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+task createDockerfile(type: Dockerfile) {
+    destFile = project.file('./Dockerfile')
+    from 'openjdk:alpine'
+    exposePort 80
+    addFile ('.', '/')
+    defaultCommand ('java', '-jar', '/build/libs/validation-service.jar')
+}
+
+task createDockerImage(type: DockerBuildImage) {
+    dependsOn fatJar
+    dependsOn createDockerfile
+    inputDir = createDockerfile.destFile.parentFile
+    tag = 'validation-service'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+   compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+}
+	 
